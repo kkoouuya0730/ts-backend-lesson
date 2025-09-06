@@ -1,0 +1,11 @@
+# Node.js 依存関係
+node_modules/
+
+# TypeScript ビルド出力
+dist/
+
+# 環境変数
+.env
+
+# Prisma SQLite データベース（実データ）
+prisma/dev.db
