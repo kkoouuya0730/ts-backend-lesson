@@ -1,11 +1,11 @@
 import request from "supertest";
 import express from "express";
 import * as userController from "../user.controller";
-import { mockUser, mockUsers } from "../../services/mocks/user.mock";
 import * as userService from "../../services/user.service";
 import { AppError } from "../../errors/AppError";
 import { INVALID_USER_ID, INVALID_USER_INPUT, USER_NOT_FOUND } from "../../constants";
 import { errorHandler } from "../../middlewares/errorHandler";
+import { mockUser, mockUsers } from "../../mocks/mocks/user.mock";
 
 jest.mock("../../services/user.service");
 
