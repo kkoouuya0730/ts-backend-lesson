@@ -1,5 +1,5 @@
 import prisma from "../models/prisma";
-import { User } from "../type";
+import { UserInput } from "../validation";
 
 export const getUsers = async () => {
   const users = await prisma.user.findMany();
@@ -15,7 +15,7 @@ export const getUser = async (id: number) => {
   return user;
 };
 
-export const createUser = async (data: User) => {
+export const createUser = async (data: UserInput) => {
   const user = await prisma.user.create({
     data,
   });

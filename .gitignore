@@ -9,3 +9,6 @@ dist/
 
 # Prisma SQLite データベース（実データ）
 prisma/dev.db
+
+# 個人的なメモ
+todo.md

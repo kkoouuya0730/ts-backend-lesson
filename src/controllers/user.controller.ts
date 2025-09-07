@@ -1,82 +1,93 @@
 import * as userService from "../services/user.service";
-import { Request, Response } from "express";
-import { userIdSchema, userInputSchema } from "../validation";
+import { Request, Response, NextFunction } from "express";
+import { userInputSchema } from "../validation";
+import { AppError } from "../errors/AppError";
+import { INVALID_USER_ID, INVALID_USER_INPUT, USER_NOT_FOUND } from "../constants";
+import { parseUserId, parseUserInput } from "./parse";
 
-export const getUsersHandler = async (_req: Request, res: Response) => {
+export const getUsersHandler = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const users = await userService.getUsers();
     res.json(users);
   } catch (error) {
-    return res.status(500).json({ error: "Failed to retrieve users" });
+    next(error);
   }
 };
 
-export const getUserHandler = async (req: Request, res: Response) => {
-  const result = userIdSchema.safeParse(req.params);
-  if (!result.success) {
-    return res.status(400).json({ error: result.error.issues });
+export const getUserHandler = async (req: Request, res: Response, next: NextFunction) => {
+  const parseUserIdResult = parseUserId(req.params.id);
+  if (!parseUserIdResult.success) {
+    throw new AppError(400, INVALID_USER_ID);
   }
 
-  const userId = result.data.id;
+  const userId = parseUserIdResult.data.id;
 
   try {
     const user = await userService.getUser(userId);
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      throw new AppError(404, USER_NOT_FOUND);
     }
     res.json(user);
   } catch (error) {
-    return res.status(500).json({ error: "Failed to retrieve user" });
+    next(error);
   }
 };
 
-export const createUserHandler = async (req: Request, res: Response) => {
+export const createUserHandler = async (req: Request, res: Response, next: NextFunction) => {
   const result = userInputSchema.safeParse(req.body);
   if (!result.success) {
-    return res.status(400).json({ error: result.error.issues });
+    throw new AppError(400, INVALID_USER_INPUT);
+  }
+
+  const parseUserInputResult = parseUserInput(req.body);
+  if (!parseUserInputResult.success) {
+    throw new AppError(400, INVALID_USER_INPUT);
   }
 
   try {
-    const newUser = await userService.createUser(req.body);
+    const newUser = await userService.createUser(parseUserInputResult.data);
     res.status(201).json(newUser);
   } catch (error) {
-    return res.status(500).json({ error: "Failed to create user" });
+    next(error);
   }
 };
 
-export const updateUserHandler = async (req: Request, res: Response) => {
-  const userIdResult = userIdSchema.safeParse(req.params);
-  if (!userIdResult.success) {
-    return res.status(400).json({ error: userIdResult.error.issues });
+export const updateUserHandler = async (req: Request, res: Response, next: NextFunction) => {
+  const parseUserIdResult = parseUserId(req.params.id);
+
+  if (!parseUserIdResult.success) {
+    throw new AppError(400, INVALID_USER_INPUT);
+    // 詳細なエラー内容を返す場合(zodが詳細を教えてくれる)
+    // throw new AppError(400, JSON.stringify(parseUserIdResult.error.issues));
   }
 
-  const userId = userIdResult.data.id;
+  const userId = parseUserIdResult.data.id;
 
-  const result = userInputSchema.safeParse(req.body);
-  if (!result.success) {
-    return res.status(400).json({ error: result.error.issues });
+  const parseUserInputResult = parseUserInput(req.body);
+  if (!parseUserInputResult.success) {
+    throw new AppError(400, INVALID_USER_INPUT);
   }
 
   try {
-    const user = await userService.updateUser(userId, result.data.name);
+    const user = await userService.updateUser(userId, parseUserInputResult.data.name);
     res.json(user);
   } catch (error) {
-    return res.status(500).json({ error: "Failed to update user" });
+    next(error);
   }
 };
 
-export const deleteUserHandler = async (req: Request, res: Response) => {
-  const result = userIdSchema.safeParse(req.params);
-  if (!result.success) {
-    return res.status(400).json({ error: result.error.issues });
+export const deleteUserHandler = async (req: Request, res: Response, next: NextFunction) => {
+  const parseUserIdResult = parseUserId(req.params.id);
+  if (!parseUserIdResult.success) {
+    throw new AppError(400, INVALID_USER_ID);
   }
 
-  const userId = result.data.id;
+  const userId = parseUserIdResult.data.id;
 
   try {
     await userService.deleteUser(userId);
     res.json({ message: "User deleted successfully" });
   } catch (error) {
-    return res.status(500).json({ error: "Failed to delete user" });
+    next(error);
   }
 };
