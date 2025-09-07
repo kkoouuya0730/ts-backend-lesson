@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`User Service createUser は新しいユーザーを作成して返す 1`] = `
+{
+  "id": 3,
+  "name": "Charlie",
+}
+`;
+
+exports[`User Service getUser は指定されたIDのユーザーを返す 1`] = `
+{
+  "id": 1,
+  "name": "Alice",
+}
+`;
+
+exports[`User Service getUsers should return a list of users 1`] = `
+[
+  {
+    "id": 1,
+    "name": "Alice",
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+  },
+]
+`;
+
+exports[`User Service getUsers はユーザー一覧を返す 1`] = `
+[
+  {
+    "id": 1,
+    "name": "Alice",
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+  },
+]
+`;
+
+exports[`User Service getUserで存在しないIDを指定した場合、nullを返す 1`] = `null`;
+
+exports[`User Service updateUser は指定されたIDのユーザーを更新して返す 1`] = `
+{
+  "id": 1,
+  "name": "Alice Updated",
+}
+`;
+
+exports[`User Service 正常系 createUser は新しいユーザーを作成して返す 1`] = `
+{
+  "id": 3,
+  "name": "Charlie",
+}
+`;
+
+exports[`User Service 正常系 getUser は指定されたIDのユーザーを返す 1`] = `
+{
+  "id": 1,
+  "name": "Alice",
+}
+`;
+
+exports[`User Service 正常系 getUsers はユーザー一覧を返す 1`] = `
+[
+  {
+    "id": 1,
+    "name": "Alice",
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+  },
+]
+`;
+
+exports[`User Service 正常系 updateUser は指定されたIDのユーザーを更新して返す 1`] = `
+{
+  "id": 1,
+  "name": "Alice Updated",
+}
+`;
+
+exports[`User Service 異常系 getUserで存在しないIDを指定した場合、nullを返す 1`] = `null`;
+
+exports[`User Service 異常系 updateUserで存在しないIDを指定した場合、エラーになる 1`] = `
+{
+  "id": 1,
+  "name": "Alice Updated",
+}
+`;

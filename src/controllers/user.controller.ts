@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { userInputSchema } from "../validation";
 import { AppError } from "../errors/AppError";
 import { INVALID_USER_ID, INVALID_USER_INPUT, USER_NOT_FOUND } from "../constants";
-import { parseUserId, parseUserInput } from "../validators/user";
+import { parseUserId, parseUserInput } from "../validators/user.validators";
 
 export const getUsersHandler = async (_req: Request, res: Response, next: NextFunction) => {
   try {
