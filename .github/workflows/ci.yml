@@ -1,0 +1,37 @@
+name: CI
+
+# main ブランチへの push またはプルリクエスト時に実行
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test: # jobの識別子
+    runs-on: ubuntu-latest # 実行環境の指定 GitHub が提供するホスト OS を選ぶ
+    steps:
+      # 1. コードをチェックアウト
+      - name: Checkout repository
+        # GitHub Actions Marketplace やリポジトリに公開されている既存アクション を呼び出すために使う
+        # 世界中の誰かがactions/checkout@v3を作ってくれた
+        # CI の実行環境にリポジトリのコードをコピー
+        uses: actions/checkout@v3
+
+      # 2. Node.js のセットアップ
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with: # アクションに渡すパラメータ
+          node-version: 20
+
+      # 3. 依存関係のインストール
+      - name: Install dependencies
+        run: npm ci # 直接シェルコマンドを実行する場合に指定
+
+      # 4. 型チェック（TypeScript がある場合）
+      - name: Type check
+        run: npm run type-check
+
+      # 5. テスト実行（Jest）
+      - name: Run tests
+        run: npm test -- --ci --coverage
