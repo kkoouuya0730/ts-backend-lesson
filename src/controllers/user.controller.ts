@@ -17,7 +17,7 @@ export const getUsersHandler = async (_req: Request, res: Response, next: NextFu
 export const getUserHandler = async (req: Request, res: Response, next: NextFunction) => {
   const parseUserIdResult = parseUserId(req.params.id);
   if (!parseUserIdResult.success) {
-    throw new AppError(400, INVALID_USER_ID);
+    throw new AppError(400, INVALID_USER_ID, parseUserIdResult.error.issues);
   }
 
   const userId = parseUserIdResult.data.id;
@@ -36,12 +36,12 @@ export const getUserHandler = async (req: Request, res: Response, next: NextFunc
 export const createUserHandler = async (req: Request, res: Response, next: NextFunction) => {
   const result = userInputSchema.safeParse(req.body);
   if (!result.success) {
-    throw new AppError(400, INVALID_USER_INPUT);
+    throw new AppError(400, INVALID_USER_INPUT, result.error.issues);
   }
 
   const parseUserInputResult = parseUserInput(req.body);
   if (!parseUserInputResult.success) {
-    throw new AppError(400, INVALID_USER_INPUT);
+    throw new AppError(400, INVALID_USER_INPUT, parseUserInputResult.error.issues);
   }
 
   try {
@@ -56,16 +56,14 @@ export const updateUserHandler = async (req: Request, res: Response, next: NextF
   const parseUserIdResult = parseUserId(req.params.id);
 
   if (!parseUserIdResult.success) {
-    throw new AppError(400, INVALID_USER_INPUT);
-    // 詳細なエラー内容を返す場合(zodが詳細を教えてくれる)
-    // throw new AppError(400, JSON.stringify(parseUserIdResult.error.issues));
+    throw new AppError(400, INVALID_USER_INPUT, parseUserIdResult.error.issues);
   }
 
   const userId = parseUserIdResult.data.id;
 
   const parseUserInputResult = parseUserInput(req.body);
   if (!parseUserInputResult.success) {
-    throw new AppError(400, INVALID_USER_INPUT);
+    throw new AppError(400, INVALID_USER_INPUT, parseUserInputResult.error.issues);
   }
 
   try {
@@ -79,7 +77,7 @@ export const updateUserHandler = async (req: Request, res: Response, next: NextF
 export const deleteUserHandler = async (req: Request, res: Response, next: NextFunction) => {
   const parseUserIdResult = parseUserId(req.params.id);
   if (!parseUserIdResult.success) {
-    throw new AppError(400, INVALID_USER_ID);
+    throw new AppError(400, INVALID_USER_ID, parseUserIdResult.error.issues);
   }
 
   const userId = parseUserIdResult.data.id;
