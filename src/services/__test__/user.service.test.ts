@@ -1,7 +1,7 @@
 import prisma from "../../models/prisma";
 import * as userService from "../user.service";
 import { AppError } from "../../errors/AppError";
-import { mockUser, mockUsers } from "../../mocks/mocks/user.mock";
+import { mockUser, mockUsers } from "../../mocks/user.mock";
 
 describe("User Service", () => {
   afterEach(() => {
