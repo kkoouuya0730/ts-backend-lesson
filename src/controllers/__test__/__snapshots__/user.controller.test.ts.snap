@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`UserController 正常系 createUserHandler 1`] = `
+{
+  "id": 1,
+  "name": "Alice",
+}
+`;
+
+exports[`UserController 正常系 deleteUserHandler 1`] = `
+{
+  "message": "User deleted successfully",
+}
+`;
+
+exports[`UserController 正常系 getUserHandler 1`] = `
+{
+  "id": 1,
+  "name": "Alice",
+}
+`;
+
+exports[`UserController 正常系 getUsersHandler 1`] = `
+[
+  {
+    "id": 1,
+    "name": "Alice",
+  },
+  {
+    "id": 2,
+    "name": "Bob",
+  },
+]
+`;
+
+exports[`UserController 正常系 updateUserHandler 1`] = `
+{
+  "id": 1,
+  "name": "Alice updated",
+}
+`;
