@@ -1,5 +1,5 @@
 import { ZodSafeParseResult } from "zod";
-import { userIdSchema, UserInput, userInputSchema } from "../validation";
+import { userIdSchema, UserInput, userInputSchema } from "../../validation";
 
 /**
  * 例外を投げる関数を限定するという意図のもと、
@@ -16,6 +16,15 @@ export const parseUserId = (
 };
 
 export const parseUserInput = (
+  input: UserInput | undefined
+): ZodSafeParseResult<{
+  name: string;
+}> => {
+  const parsedInput = userInputSchema.safeParse(input);
+  return parsedInput;
+};
+
+export const parseCreateUserInput = (
   input: UserInput | undefined
 ): ZodSafeParseResult<{
   name: string;

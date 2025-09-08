@@ -1,14 +1,8 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`User Service 正常系 createUser は新しいユーザーを作成して返す 1`] = `
-{
-  "id": 3,
-  "name": "Charlie",
-}
-`;
-
 exports[`User Service 正常系 getUser は指定されたIDのユーザーを返す 1`] = `
 {
+  "email": "test1@test.com",
   "id": 1,
   "name": "Alice",
 }
@@ -17,10 +11,12 @@ exports[`User Service 正常系 getUser は指定されたIDのユーザーを�
 exports[`User Service 正常系 getUsers はユーザー一覧を返す 1`] = `
 [
   {
+    "email": "test1@test.com",
     "id": 1,
     "name": "Alice",
   },
   {
+    "email": "test2@test.com",
     "id": 2,
     "name": "Bob",
   },
@@ -29,6 +25,7 @@ exports[`User Service 正常系 getUsers はユーザー一覧を返す 1`] = `
 
 exports[`User Service 正常系 updateUser は指定されたIDのユーザーを更新して返す 1`] = `
 {
+  "email": "test@test.com",
   "id": 1,
   "name": "Alice Updated",
 }

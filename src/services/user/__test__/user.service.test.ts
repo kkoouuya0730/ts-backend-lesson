@@ -1,7 +1,7 @@
-import prisma from "../../models/prisma";
-import * as userService from "../user.service";
-import { AppError } from "../../errors/AppError";
-import { mockUser, mockUsers } from "../../mocks/user.mock";
+import prisma from "../../../models/prisma";
+import * as userService from "../../user/user.service";
+import { AppError } from "../../../errors/AppError";
+import { mockUser, mockUsers, mockUsersWithNoPassword } from "../../../mocks/user.mock";
 
 describe("User Service", () => {
   afterEach(() => {
@@ -14,7 +14,7 @@ describe("User Service", () => {
 
       const result = await userService.getUsers();
 
-      expect(result).toEqual(mockUsers);
+      expect(result).toEqual(mockUsersWithNoPassword);
       expect(findManySpy).toHaveBeenCalledTimes(1);
       expect(result).toMatchSnapshot();
     });
@@ -25,36 +25,44 @@ describe("User Service", () => {
 
       const result = await userService.getUser(userId);
 
-      expect(result).toEqual(mockUser);
+      expect(result).toEqual({ id: mockUser.id, name: mockUser.name, email: mockUser.email });
       expect(findUniqueSpy).toHaveBeenCalledWith({
         where: { id: userId },
       });
       expect(result).toMatchSnapshot();
     });
 
-    test("createUser は新しいユーザーを作成して返す", async () => {
-      const userInput = { name: "Charlie" };
-      const createdUser = { id: 3, name: "Charlie" };
-      const createSpy = jest.spyOn(prisma.user, "create").mockResolvedValue(createdUser);
+    // TODO authに移動したのでそっちでテスト書く
+    // test("createUser は新しいユーザーを作成して返す", async () => {
+    //   const userInput = { name: "Charlie" };
+    //   const createdUser = { id: 3, name: "Charlie" };
+    //   const createSpy = jest.spyOn(prisma.user, "create").mockResolvedValue(createdUser);
 
-      const result = await userService.createUser(userInput);
+    //   const result = await userService.createUser(userInput);
 
-      expect(result).toEqual(createdUser);
-      expect(createSpy).toHaveBeenCalledWith({
-        data: userInput,
-      });
-      expect(result).toMatchSnapshot();
-    });
+    //   expect(result).toEqual(createdUser);
+    //   expect(createSpy).toHaveBeenCalledWith({
+    //     data: userInput,
+    //   });
+    //   expect(result).toMatchSnapshot();
+    // });
 
     test("updateUser は指定されたIDのユーザーを更新して返す", async () => {
       const userId = 1;
       const newName = "Alice Updated";
-      const updatedUser = { id: userId, name: newName };
+      const updatedUser = {
+        id: userId,
+        name: newName,
+        email: "test@test.com",
+        passwordHash: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      };
       const updateSpy = jest.spyOn(prisma.user, "update").mockResolvedValue(updatedUser);
 
       const result = await userService.updateUser(userId, newName);
 
-      expect(result).toEqual(updatedUser);
+      const { passwordHash, ...publicUser } = updatedUser;
+
+      expect(result).toEqual(publicUser);
       expect(updateSpy).toHaveBeenCalledWith({
         where: { id: userId },
         data: { name: newName },

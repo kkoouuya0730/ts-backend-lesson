@@ -1,12 +1,5 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`UserController 正常系 createUserHandler 1`] = `
-{
-  "id": 1,
-  "name": "Alice",
-}
-`;
-
 exports[`UserController 正常系 deleteUserHandler 1`] = `
 {
   "message": "User deleted successfully",
@@ -15,26 +8,33 @@ exports[`UserController 正常系 deleteUserHandler 1`] = `
 
 exports[`UserController 正常系 getUserHandler 1`] = `
 {
+  "email": "test1@test.com",
   "id": 1,
   "name": "Alice",
+  "passwordHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
 }
 `;
 
 exports[`UserController 正常系 getUsersHandler 1`] = `
 [
   {
+    "email": "test1@test.com",
     "id": 1,
     "name": "Alice",
+    "passwordHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   },
   {
+    "email": "test2@test.com",
     "id": 2,
     "name": "Bob",
+    "passwordHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
   },
 ]
 `;
 
 exports[`UserController 正常系 updateUserHandler 1`] = `
 {
+  "email": "test@test.com",
   "id": 1,
   "name": "Alice updated",
 }

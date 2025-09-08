@@ -1,8 +1,8 @@
-import * as userService from "../services/user.service";
+import * as userService from "../../services/user/user.service";
 import { Request, Response, NextFunction } from "express";
-import { AppError } from "../errors/AppError";
-import { INVALID_USER_ID, INVALID_USER_INPUT, USER_NOT_FOUND } from "../constants";
-import { parseUserId, parseUserInput } from "../validators/user.validators";
+import { AppError } from "../../errors/AppError";
+import { INVALID_USER_ID, INVALID_USER_INPUT, USER_NOT_FOUND } from "../../constants";
+import { parseUserId, parseUserInput } from "../../validators/user/user.validators";
 
 export const getUsersHandler = async (_req: Request, res: Response, next: NextFunction) => {
   try {
@@ -32,20 +32,6 @@ export const getUserHandler = async (req: Request, res: Response, next: NextFunc
   }
 };
 
-export const createUserHandler = async (req: Request, res: Response, next: NextFunction) => {
-  const parseUserInputResult = parseUserInput(req.body);
-  if (!parseUserInputResult.success) {
-    throw new AppError(400, INVALID_USER_INPUT, parseUserInputResult.error.issues);
-  }
-
-  try {
-    const newUser = await userService.createUser(parseUserInputResult.data);
-    res.status(201).json(newUser);
-  } catch (error) {
-    next(error);
-  }
-};
-
 export const updateUserHandler = async (req: Request, res: Response, next: NextFunction) => {
   const parseUserIdResult = parseUserId(req.params.id);
 
@@ -55,6 +41,7 @@ export const updateUserHandler = async (req: Request, res: Response, next: NextF
 
   const userId = parseUserIdResult.data.id;
 
+  console.log(req.body);
   const parseUserInputResult = parseUserInput(req.body);
   if (!parseUserInputResult.success) {
     throw new AppError(400, INVALID_USER_INPUT, parseUserInputResult.error.issues);

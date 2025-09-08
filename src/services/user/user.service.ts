@@ -1,16 +1,20 @@
-import prisma from "../models/prisma";
-import { UserInput } from "../validation";
+import prisma from "../../models/prisma";
+import { UserInput } from "../../validation";
 
 export const getUsers = async () => {
-  return await prisma.user.findMany();
+  const users = await prisma.user.findMany();
+  return users.map(({ passwordHash, ...publicUser }) => publicUser);
 };
 
 export const getUser = async (id: number) => {
-  return await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       id,
     },
   });
+  if (!user) return null;
+  const { passwordHash, ...publicUser } = user;
+  return publicUser;
 };
 
 export const createUser = async (data: UserInput) => {
@@ -20,7 +24,7 @@ export const createUser = async (data: UserInput) => {
 };
 
 export const updateUser = async (id: number, name: string) => {
-  return await prisma.user.update({
+  const updatedUser = await prisma.user.update({
     where: {
       id,
     },
@@ -28,6 +32,8 @@ export const updateUser = async (id: number, name: string) => {
       name,
     },
   });
+  const { passwordHash, ...publicUser } = updatedUser;
+  return publicUser;
 };
 
 export const deleteUser = async (id: number) => {
