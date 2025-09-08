@@ -2,7 +2,7 @@ import * as userService from "../../services/user/user.service";
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../../errors/AppError";
 import { INVALID_USER_ID, INVALID_USER_INPUT, USER_NOT_FOUND } from "../../constants";
-import { parseUserId, parseUserInput } from "../../validators/user/user.validators";
+import { userIdSchema, userInputSchema } from "../../validation";
 
 export const getUsersHandler = async (_req: Request, res: Response, next: NextFunction) => {
   try {
@@ -14,12 +14,13 @@ export const getUsersHandler = async (_req: Request, res: Response, next: NextFu
 };
 
 export const getUserHandler = async (req: Request, res: Response, next: NextFunction) => {
-  const parseUserIdResult = parseUserId(req.params.id);
-  if (!parseUserIdResult.success) {
-    throw new AppError(400, INVALID_USER_ID, parseUserIdResult.error.issues);
+  const parsedUserIdResult = userIdSchema.safeParse({ id: req.params.id });
+  console.log(parsedUserIdResult);
+  if (!parsedUserIdResult.success) {
+    throw new AppError(400, INVALID_USER_ID, parsedUserIdResult.error.issues);
   }
 
-  const userId = parseUserIdResult.data.id;
+  const userId = parsedUserIdResult.data.id;
 
   try {
     const user = await userService.getUser(userId);
@@ -33,22 +34,21 @@ export const getUserHandler = async (req: Request, res: Response, next: NextFunc
 };
 
 export const updateUserHandler = async (req: Request, res: Response, next: NextFunction) => {
-  const parseUserIdResult = parseUserId(req.params.id);
+  const parsedUserIdResult = userIdSchema.safeParse({ id: req.params.id });
 
-  if (!parseUserIdResult.success) {
-    throw new AppError(400, INVALID_USER_ID, parseUserIdResult.error.issues);
+  if (!parsedUserIdResult.success) {
+    throw new AppError(400, INVALID_USER_ID, parsedUserIdResult.error.issues);
   }
 
-  const userId = parseUserIdResult.data.id;
+  const userId = parsedUserIdResult.data.id;
 
-  console.log(req.body);
-  const parseUserInputResult = parseUserInput(req.body);
-  if (!parseUserInputResult.success) {
-    throw new AppError(400, INVALID_USER_INPUT, parseUserInputResult.error.issues);
+  const parsedInput = userInputSchema.safeParse(req.body);
+  if (!parsedInput.success) {
+    throw new AppError(400, INVALID_USER_INPUT, parsedInput.error.issues);
   }
 
   try {
-    const user = await userService.updateUser(userId, parseUserInputResult.data.name);
+    const user = await userService.updateUser(userId, parsedInput.data.name);
     res.json(user);
   } catch (error) {
     next(error);
@@ -56,12 +56,12 @@ export const updateUserHandler = async (req: Request, res: Response, next: NextF
 };
 
 export const deleteUserHandler = async (req: Request, res: Response, next: NextFunction) => {
-  const parseUserIdResult = parseUserId(req.params.id);
-  if (!parseUserIdResult.success) {
-    throw new AppError(400, INVALID_USER_ID, parseUserIdResult.error.issues);
+  const parsedUserIdResult = userIdSchema.safeParse({ id: req.params.id });
+  if (!parsedUserIdResult.success) {
+    throw new AppError(400, INVALID_USER_ID, parsedUserIdResult.error.issues);
   }
 
-  const userId = parseUserIdResult.data.id;
+  const userId = parsedUserIdResult.data.id;
 
   try {
     await userService.deleteUser(userId);
