@@ -32,21 +32,6 @@ describe("User Service", () => {
       expect(result).toMatchSnapshot();
     });
 
-    // TODO authに移動したのでそっちでテスト書く
-    // test("createUser は新しいユーザーを作成して返す", async () => {
-    //   const userInput = { name: "Charlie" };
-    //   const createdUser = { id: 3, name: "Charlie" };
-    //   const createSpy = jest.spyOn(prisma.user, "create").mockResolvedValue(createdUser);
-
-    //   const result = await userService.createUser(userInput);
-
-    //   expect(result).toEqual(createdUser);
-    //   expect(createSpy).toHaveBeenCalledWith({
-    //     data: userInput,
-    //   });
-    //   expect(result).toMatchSnapshot();
-    // });
-
     test("updateUser は指定されたIDのユーザーを更新して返す", async () => {
       const userId = 1;
       const newName = "Alice Updated";

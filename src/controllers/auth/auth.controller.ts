@@ -6,7 +6,7 @@ import { registerUserSchema } from "../../validation";
 import prisma from "../../models/prisma";
 import bcrypt from "bcrypt";
 
-export const createUserHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const registerUserHandler = async (req: Request, res: Response, next: NextFunction) => {
   const result = registerUserSchema.safeParse(req.body);
 
   if (!result.success) {
@@ -15,6 +15,7 @@ export const createUserHandler = async (req: Request, res: Response, next: NextF
 
   const { name, email, password } = result.data;
 
+  // TODO userService.getUser() を使う
   const isExisting = await prisma.user.findUnique({ where: { email } });
   if (isExisting) {
     throw new AppError(400, USER_ALREADY_EXISTS);

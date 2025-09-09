@@ -15,7 +15,6 @@ export const getUsersHandler = async (_req: Request, res: Response, next: NextFu
 
 export const getUserHandler = async (req: Request, res: Response, next: NextFunction) => {
   const parsedUserIdResult = userIdSchema.safeParse({ id: req.params.id });
-  console.log(parsedUserIdResult);
   if (!parsedUserIdResult.success) {
     throw new AppError(400, INVALID_USER_ID, parsedUserIdResult.error.issues);
   }
