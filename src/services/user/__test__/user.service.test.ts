@@ -25,7 +25,7 @@ describe("User Service", () => {
 
       const result = await userService.getUser(userId);
 
-      expect(result).toEqual({ id: mockUser.id, name: mockUser.name, email: mockUser.email });
+      expect(result).toEqual({ id: mockUser.id, name: mockUser.name, email: mockUser.email, role: "user" });
       expect(findUniqueSpy).toHaveBeenCalledWith({
         where: { id: userId },
       });
@@ -40,6 +40,7 @@ describe("User Service", () => {
         name: newName,
         email: "test@test.com",
         passwordHash: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        role: "user",
       };
       const updateSpy = jest.spyOn(prisma.user, "update").mockResolvedValue(updatedUser);
 

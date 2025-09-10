@@ -13,7 +13,6 @@ const app = express();
 app.use(express.json());
 app.get("/users", userController.getUsersHandler);
 app.get("/users/:id", userController.getUserHandler);
-// app.post("/users", userController.createUserHandler);
 app.put("/users/:id", userController.updateUserHandler);
 app.delete("/users/:id", userController.deleteUserHandler);
 app.use(errorHandler);
@@ -44,18 +43,6 @@ describe("UserController", () => {
       expect(userService.getUser).toHaveBeenCalledTimes(1);
       expect(res.body).toMatchSnapshot();
     });
-
-    // TODO authに移動したのでそっちでテスト書く
-    // test("createUserHandler", async () => {
-    //   (userService.createUser as jest.Mock).mockResolvedValue(mockUser);
-
-    //   const res = await request(app).post("/users").send({ name: "Alice" });
-
-    //   expect(res.status).toBe(201);
-    //   expect(res.body).toEqual(mockUser);
-    //   expect(userService.createUser).toHaveBeenCalledTimes(1);
-    //   expect(res.body).toMatchSnapshot();
-    // });
 
     test("updateUserHandler", async () => {
       (userService.updateUser as jest.Mock).mockResolvedValue({
@@ -101,22 +88,6 @@ describe("UserController", () => {
       });
       expect(userService.getUser).toHaveBeenCalledTimes(1);
     });
-
-    // test("createUserHandler", async () => {
-    //   (userService.createUser as jest.Mock).mockRejectedValue(new AppError(400, INVALID_USER_INPUT));
-
-    //   const res = await request(app).post("/users").send({ name: "" });
-
-    //   expect(res.status).toBe(400);
-    //   expect(res.body).toEqual({
-    //     error: {
-    //       code: 400,
-    //       message: "Invalid user input",
-    //       details: expect.any(Array),
-    //     },
-    //   });
-    //   expect(userService.createUser).toHaveBeenCalledTimes(0);
-    // });
 
     test("updateUserHandler request bodyが不正", async () => {
       (userService.updateUser as jest.Mock).mockRejectedValue(new AppError(400, INVALID_USER_INPUT));

@@ -5,6 +5,7 @@ exports[`User Service 正常系 getUser は指定されたIDのユーザーを�
   "email": "test1@test.com",
   "id": 1,
   "name": "Alice",
+  "role": "user",
 }
 `;
 
@@ -14,11 +15,13 @@ exports[`User Service 正常系 getUsers はユーザー一覧を返す 1`] = `
     "email": "test1@test.com",
     "id": 1,
     "name": "Alice",
+    "role": "user",
   },
   {
     "email": "test2@test.com",
     "id": 2,
     "name": "Bob",
+    "role": "user",
   },
 ]
 `;
@@ -28,5 +31,6 @@ exports[`User Service 正常系 updateUser は指定されたIDのユーザー�
   "email": "test@test.com",
   "id": 1,
   "name": "Alice Updated",
+  "role": "user",
 }
 `;

@@ -69,3 +69,49 @@ export const deleteUserHandler = async (req: Request, res: Response, next: NextF
     next(error);
   }
 };
+
+export const getMeHandler = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    throw new AppError(400, INVALID_USER_INPUT);
+  }
+  try {
+    const user = await userService.getUser(req.user.id);
+    if (!user) {
+      throw new AppError(404, USER_NOT_FOUND);
+    }
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateMeHandler = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    throw new AppError(400, INVALID_USER_INPUT);
+  }
+
+  const parsedInput = userInputSchema.safeParse(req.body);
+  if (!parsedInput.success) {
+    throw new AppError(400, INVALID_USER_INPUT, parsedInput.error.issues);
+  }
+
+  try {
+    const user = await userService.updateUser(req.user.id, parsedInput.data.name);
+    res.json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteMeHandler = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    throw new AppError(400, INVALID_USER_INPUT);
+  }
+
+  try {
+    await userService.deleteUser(req.user.id);
+    res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};

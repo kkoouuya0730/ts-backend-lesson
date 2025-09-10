@@ -12,6 +12,7 @@ exports[`UserController 正常系 getUserHandler 1`] = `
   "id": 1,
   "name": "Alice",
   "passwordHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "role": "user",
 }
 `;
 
@@ -22,12 +23,14 @@ exports[`UserController 正常系 getUsersHandler 1`] = `
     "id": 1,
     "name": "Alice",
     "passwordHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "role": "user",
   },
   {
     "email": "test2@test.com",
     "id": 2,
     "name": "Bob",
     "passwordHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "role": "user",
   },
 ]
 `;
